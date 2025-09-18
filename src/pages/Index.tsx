@@ -1,12 +1,40 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { useState } from "react";
+import Header from "../components/layout/Header";
+import Hero from "../components/sections/Hero";
+import Features from "../components/sections/Features";
+import Modules from "../components/sections/Modules";
+import Testimonials from "../components/sections/Testimonials";
+import Footer from "../components/layout/Footer";
+import AuthModal from "../components/auth/AuthModal";
 
 const Index = () => {
+  const [showAuthModal, setShowAuthModal] = useState(false);
+  const [authMode, setAuthMode] = useState<"login" | "register">("login");
+
+  const handleAuthOpen = (mode: "login" | "register") => {
+    setAuthMode(mode);
+    setShowAuthModal(true);
+  };
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="mb-4 text-4xl font-bold">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
-      </div>
+    <div className="min-h-screen bg-background overflow-hidden">
+      <Header onAuthOpen={handleAuthOpen} />
+      
+      <main>
+        <Hero onGetStarted={() => handleAuthOpen("register")} />
+        <Features />
+        <Modules />
+        <Testimonials />
+      </main>
+
+      <Footer />
+
+      <AuthModal 
+        isOpen={showAuthModal} 
+        onClose={() => setShowAuthModal(false)}
+        mode={authMode}
+        onModeChange={setAuthMode}
+      />
     </div>
   );
 };
